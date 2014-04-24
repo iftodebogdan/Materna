@@ -6,12 +6,12 @@
  * Time: 11:34 PM
  */
 
-namespace Controllers;
+namespace Models;
 
-
-class TestController {
+//The model for the Home page
+class HomeModel {
     function __construct()
     {
-        echo 'TestController constructed</br>';
+
     }
 } 

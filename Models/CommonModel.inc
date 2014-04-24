@@ -1,0 +1,38 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Sorrell
+ * Date: 24/04/14
+ * Time: 19:34
+ */
+
+namespace Models;
+
+//Include SQL helpers
+require_once('Utils/SQL/SQLHelper.inc');
+use Utils\SQL\SQLHelper as SQLHelper;
+
+//A model for common data that can be retrieved/manipulated by any View/Controller
+class CommonModel {
+    //Retrieve header link list information from the DB
+    public static function GetHeaderLinks(&$links)
+    {
+        //create new SQLHelper class
+        $sql = new SQLHelper();
+        //connect to the DB with the info from cfg.inc
+        $sql->Connect();
+        //execute the query
+        $result = $sql->Query('SELECT LinkText AS text, LinkHref AS href FROM HeaderLinks GROUP BY LinkIdx ASC');
+        //disconnect from the DB
+        $sql->Disconnect();
+
+        //insert link info in array
+        while($result && $row = mysqli_fetch_array($result)) {
+            $links[] = $row;
+        }
+
+        //return number of rows retrieved
+        $rowCount = $result ? mysqli_num_rows($result) : 0;
+        return $rowCount;
+    }
+}

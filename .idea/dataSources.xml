@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="3035021565">
-    <data-source source="LOCAL" name="MySQL - materna@server" uuid="a6e067fb-d51c-4022-b55b-ed104b577872">
+  <component name="DataSourceManagerImpl" format="xml" hash="1672919793">
+    <data-source source="LOCAL" name="MySQL - materna@iftodebogdan.dlinkddns.com" uuid="a6e067fb-d51c-4022-b55b-ed104b577872">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://server:3306/materna</jdbc-url>
+      <jdbc-url>jdbc:mysql://iftodebogdan.dlinkddns.com:3306/materna</jdbc-url>
       <user-name>materna</user-name>
       <user-password>df9bdf9bdf98df99df9fdf92df9bdf99df98df9b</user-password>
       <driver-properties>
