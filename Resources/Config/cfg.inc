@@ -11,6 +11,8 @@ namespace Resources\Config;
 //A class containing hard-coded configuration data
 class Cfg{
     public static $locale       = "ro-ro";
+    public static $appTitle     = "Materna";
+    public static $appTheme     = "Materna";
 
     public static $cfgDbHost    = "localhost";
     public static $cfgDbUser    = "materna";

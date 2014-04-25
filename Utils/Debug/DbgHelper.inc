@@ -54,12 +54,20 @@ class DbgHelper {
     }
 
     //Displays a debug message and dies
-    public static function printDbgMsgAndDie($message, $channel = DbgHelper::NONE)
+    public static function printDbgMsgAndDie($message, $channel = DbgHelper::NONE, $printStackTrace = true)
     {
         if(__DEBUG)
         {
-            $constName = $bt = $caller = null;
-            self::buildDbgMsg($message, $channel, $constName, $bt, $caller);
+            self::buildDbgMsg($message, $channel);
+
+            if($printStackTrace)
+            {
+                $e = new \Exception;
+                echo '<pre>';
+                echo $e->getTraceAsString();
+                echo '</pre>';
+            }
+
             die($message);
         }
     }

@@ -8,11 +8,13 @@
 
 namespace Views;
 
+//Include global config data
 require_once('Resources/Config/cfg.inc');
+use \Resources\Config\Cfg as Cfg;
 
 //Include theme class
-require_once('Resources/Themes/MaternaTheme.inc');
-use Resources\Themes\MaternaTheme as CurrentTheme;
+require_once('Resources/Themes/' . Cfg::$appTheme . 'Theme.inc');
+use Resources\Themes\Theme as Theme;
 
 //Include Model class
 require_once('Models/HomeModel.inc');
@@ -27,10 +29,10 @@ class HomeView {
     function __construct(Controller $controller, Model $model)
     {
         //Draw the view
-        CurrentTheme::BeginDraw();
-        CurrentTheme::DrawHeader();
+        Theme::BeginDraw();
+        Theme::DrawHeader();
 
-        CurrentTheme::DrawFooter();
-        CurrentTheme::EndDraw();
+        Theme::DrawFooter();
+        Theme::EndDraw();
     }
 }
