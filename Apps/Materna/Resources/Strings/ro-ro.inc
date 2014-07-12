@@ -17,7 +17,7 @@ require_once('Resources/Config/cfg.inc');
 use \Resources\Config\Cfg as Cfg;
 
 //Include base class for Locale
-require_once('LocaleBase.inc');
+require_once('Resources/Strings/LocaleBase.inc');
 
 //Check if the correct locale is loaded
 if(strcmp(Cfg::$locale, "ro-ro") == 0)

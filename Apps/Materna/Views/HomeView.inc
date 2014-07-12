@@ -13,15 +13,15 @@ require_once('Resources/Config/cfg.inc');
 use \Resources\Config\Cfg as Cfg;
 
 //Include theme class
-require_once('Resources/Themes/' . Cfg::$appTheme . 'Theme.inc');
+require_once('Apps/' . Cfg::$appTitle . '/Resources/Themes/' . Cfg::$appTheme . 'Theme.inc');
 use Resources\Themes\Theme as Theme;
 
 //Include Model class
-require_once('Models/HomeModel.inc');
+require_once('Apps/' . Cfg::$appTitle . '/Models/HomeModel.inc');
 use Models\HomeModel as Model;
 
 //Include Controller class
-require_once('Controllers/HomeController.inc');
+require_once('Apps/' . Cfg::$appTitle . '/Controllers/HomeController.inc');
 use Controllers\HomeController as Controller;
 
 //The view for the Home page

@@ -21,17 +21,17 @@ include_once('Resources/Config/cfg.inc');
 use Resources\Config\Cfg as Cfg;
 
 //Include localised string resources
-require_once('Resources/Strings/' . Cfg::$locale . '.inc');
+require_once('Apps/' . Cfg::$appTitle . '/Resources/Strings/' . Cfg::$locale . '.inc');
 use Resources\Strings\Locale as Locale;
 
 //Include base theme class
-require_once('ThemeBase.inc');
+require_once('Resources/Themes/ThemeBase.inc');
 
 //Check if the correct theme is loaded
 if(strcmp(Cfg::$appTheme, "Materna") == 0)
 {
     class Theme implements ThemeBase {
-        private static $stylePath = '/materna/Resources/Styles/Materna/style.css';
+        //private static $stylePath = '/WebEngine/Apps' . Cfg::$appTitle . '/Resources/Styles/Materna/style.css';
 
         //Draw <head> and start <body>
         public static function BeginDraw()
@@ -44,7 +44,7 @@ if(strcmp(Cfg::$appTheme, "Materna") == 0)
 
                 <head>
                     <title><?php echo Cfg::$appTitle; ?></title>
-                    <link rel="stylesheet" type="text/css" href="<?php echo self::$stylePath; ?>">
+                    <link rel="stylesheet" type="text/css" href="<?php echo '/WebEngine/Apps/' . Cfg::$appTitle . '/Resources/Styles/style.css'; ?>">
                     <noscript>
                     Whoops, we detected that your browser does not have JavaScript, or it is disabled.  Our product catalog
                     requires that you have JavaScript enabled to order products.  <a href="http://www.netscape.com">Netscape</a>

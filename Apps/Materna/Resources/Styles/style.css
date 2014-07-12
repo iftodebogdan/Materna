@@ -32,35 +32,35 @@ a {
     width:              16px;
     height:             43px;
     float:              left;
-    background:         url('../../Textures/Materna/links-menu-left.gif') no-repeat;
+    background:         url('../Textures/links-menu-left.gif') no-repeat;
 }
 
 #top-links-middle {
     width:              968px;
     height:             43px;
     float:              left;
-    background:         url('../../Textures/Materna/links-menu-bg.gif') repeat-x;
+    background:         url('../Textures/links-menu-bg.gif') repeat-x;
 }
 
 #top-links-right {
     width:              16px;
     height:             43px;
     float:              right;
-    background:         url('../../Textures/Materna/links-menu-right.gif') no-repeat;
+    background:         url('../Textures/links-menu-right.gif') no-repeat;
 }
 
 .top-links-sep {
     width:              1px;
     height:             43px;
     float:              left;
-    background:         url('../../Textures/Materna/links-menu-sep.gif') no-repeat;
+    background:         url('../Textures/links-menu-sep.gif') no-repeat;
 }
 
 #top-links-home {
     width:              20px;
     height:             16px;
     float:              left;
-    background:         url('../../Textures/Materna/home.png') no-repeat;
+    background:         url('../Textures/home.png') no-repeat;
 }
 
 .top-links-item {
@@ -74,27 +74,27 @@ a {
 }
 
 .top-links-item:hover {
-    background:         url('../../Textures/Materna/links-menu-sep.gif') repeat-x;
+    background:         url('../Textures/links-menu-sep.gif') repeat-x;
 }
 
 #logo {
     height:             70px;
     width:              1006px;
     margin:             0 auto;
-    background:         url('../../Textures/Materna/logo.gif') no-repeat;
+    background:         url('../Textures/logo.gif') no-repeat;
 }
 
 #main-header {
     height:             16px;
     width:              1006px;
     margin:             0 auto;
-    background:         url('../../Textures/Materna/main-header.gif') no-repeat;
+    background:         url('../Textures/main-header.gif') no-repeat;
 }
 
 #main-center {
     width:              1006px;
     margin:             0 auto;
-    background:         url('../../Textures/Materna/main-center.gif') repeat-y;
+    background:         url('../Textures/main-center.gif') repeat-y;
     text-align:         center;
 }
 
@@ -102,7 +102,7 @@ a {
     height:             16px;
     width:              1006px;
     margin:             0 auto;
-    background:         url('../../Textures/Materna/main-footer.gif') no-repeat;
+    background:         url('../Textures/main-footer.gif') no-repeat;
 }
 
 .product {

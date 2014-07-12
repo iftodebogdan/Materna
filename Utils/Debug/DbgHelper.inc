@@ -16,12 +16,14 @@ if(!defined('__DEBUG'))
 class DbgHelper {
     //constants used for debug messages (errors, warnings, etc.)
     const NONE          = -1;   //for unknown  or generic message types
-    const MODEL         =  0;   //for messages related to Models
-    const VIEW          =  1;   //for messages related to Views
-    const CONTROLLER    =  2;   //for messages related to Controllers
-    const RESOURCE      =  3;   //for messages related to resources
-    const SQL           =  4;   //for messages related to SQL
-    const ERROR         =  5;   //for generic errors
+    const SYSTEM        =  0;   //for system errors
+    const MODEL         =  1;   //for messages related to Models
+    const VIEW          =  2;   //for messages related to Views
+    const CONTROLLER    =  3;   //for messages related to Controllers
+    const RESOURCE      =  4;   //for messages related to resources
+    const SQL           =  5;   //for messages related to SQL
+    const ERROR         =  6;   //for generic errors
+    const APP           =  7;   //for app errors
 
     //internal function which formats the debug message
     private static function buildDbgMsg(&$message, $channel)
