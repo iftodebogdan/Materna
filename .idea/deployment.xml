@@ -5,7 +5,7 @@
       <paths name="iftodebogdan.dlinkddns.com">
         <serverdata>
           <mappings>
-            <mapping deploy="/materna" local="$PROJECT_DIR$" web="/materna" />
+            <mapping deploy="/WebEngine" local="$PROJECT_DIR$" web="/WebEngine" />
           </mappings>
         </serverdata>
       </paths>

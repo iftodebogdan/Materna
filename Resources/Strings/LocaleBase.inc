@@ -21,9 +21,9 @@ abstract class LocaleBase {
         if(property_exists('\\Resources\\Strings\\Locale', $id))
             return static::$$id;
         else
-            //string ID not found, print a helpful debug message and return null
-            DbgHelper::printDbgMsg('String ID "' . $id . '" is invalid!', DbgHelper::RESOURCE);
+            //string ID not found, print a helpful debug message and return
+            DbgHelper::PrintDbgMsg('String ID "' . $id . '" is invalid!', DbgHelper::RESOURCE);
 
-        return null;
+        return $id;
     }
 }

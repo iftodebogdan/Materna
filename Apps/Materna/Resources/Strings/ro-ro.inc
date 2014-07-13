@@ -35,4 +35,4 @@ if(strcmp(Cfg::$locale, "ro-ro") == 0)
 }
 else
     //Wrong locale loaded, print a helpful debug message and die
-    DbgHelper::printDbgMsgAndDie('Locale "' . Cfg::$locale . '" found in cfg.inc, but "' . basename(__FILE__) . '" has been loaded instead!', DbgHelper::RESOURCE);
+    DbgHelper::PrintDbgMsgAndDie('Locale "' . Cfg::$locale . '" found in cfg.inc, but "' . basename(__FILE__) . '" has been loaded instead!', DbgHelper::RESOURCE);

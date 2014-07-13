@@ -13,6 +13,7 @@ class Cfg{
     public static $locale       = "ro-ro";
     public static $appTitle     = "Materna";
     public static $appTheme     = "Materna";
+    public static $appSupport   = "iftode.bogdan@gmail.com";
 
     public static $cfgDbHost    = "localhost";
     public static $cfgDbUser    = "materna";

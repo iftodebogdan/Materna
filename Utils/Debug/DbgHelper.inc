@@ -12,55 +12,72 @@ namespace Utils\Debug;
 if(!defined('__DEBUG'))
     define('__DEBUG', true);
 
+//Activate assert and make it quiet
+assert_options(ASSERT_ACTIVE, 1);
+assert_options(ASSERT_WARNING, 0);
+assert_options(ASSERT_QUIET_EVAL, 1);
+
+//Include Cfg class to access configuration data
+require_once('Resources/Config/cfg.inc');
+use \Resources\Config\Cfg as Cfg;
+
 //Debug helper class for printing helpful messages and such
 class DbgHelper {
     //constants used for debug messages (errors, warnings, etc.)
     const NONE          = -1;   //for unknown  or generic message types
     const SYSTEM        =  0;   //for system errors
-    const MODEL         =  1;   //for messages related to Models
-    const VIEW          =  2;   //for messages related to Views
-    const CONTROLLER    =  3;   //for messages related to Controllers
-    const RESOURCE      =  4;   //for messages related to resources
-    const SQL           =  5;   //for messages related to SQL
-    const ERROR         =  6;   //for generic errors
-    const APP           =  7;   //for app errors
+    const ASSERT        =  1;   //for asserts
+    const MODEL         =  2;   //for messages related to Models
+    const VIEW          =  3;   //for messages related to Views
+    const CONTROLLER    =  4;   //for messages related to Controllers
+    const RESOURCE      =  5;   //for messages related to resources
+    const SQL           =  6;   //for messages related to SQL
+    const ERROR         =  7;   //for generic errors
+    const APP           =  8;   //for app errors
+    const GUI           =  9;   //for GUI errors
 
-    //internal function which formats the debug message
-    private static function buildDbgMsg(&$message, $channel)
+    //internal function which returns the channel name
+    private static function GetChannelName($channel)
     {
         $class = new \ReflectionClass('\Utils\Debug\DbgHelper');
         $constants = $class->getConstants();
 
-        $constName = 'ERROR';
+        $channelName = 'ERROR';
         foreach ( $constants as $name => $value )
         {
             if ( $value == $channel )
             {
-                $constName = $name;
+                $channelName = $name;
                 break;
             }
         }
 
+        return $channelName;
+    }
+
+    //internal function which formats the debug message
+    private static function BuildDbgMsg(&$message, $channel)
+    {
         $bt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)[1];
-        $message = '<p>[' . strtoupper($constName) . '] ' . $message . ' in ' . $bt['file'] . ' at line ' . $bt['line'] . '</p>';
+        $message = '<p>[' . strtoupper(DbgHelper::GetChannelName($channel)) . '] ' . $message . ' in ' . $bt['file'] . ' at line ' . $bt['line'] . '</p>';
     }
 
     //Displays a debug message
-    public static function printDbgMsg($message, $channel = DbgHelper::NONE)
+    public static function PrintDbgMsg($message, $channel = DbgHelper::NONE)
     {
         if(__DEBUG)
         {
-            self::buildDbgMsg($message, $channel);
+            self::BuildDbgMsg($message, $channel);
             echo $message;
         }
     }
 
     //Displays a debug message and dies
-    public static function printDbgMsgAndDie($message, $channel = DbgHelper::NONE, $printStackTrace = true)
+    public static function PrintDbgMsgAndDie($message, $channel = DbgHelper::NONE, $printStackTrace = true)
     {
         if(__DEBUG)
         {
-            self::buildDbgMsg($message, $channel);
+            self::BuildDbgMsg($message, $channel);
 
             if($printStackTrace)
             {
@@ -72,5 +89,26 @@ class DbgHelper {
 
             die($message);
         }
+        else
+            die("<p>Something went wrong. Please contact <a href='mailto:" . Cfg::$appSupport . "'>support.</a></p>");
     }
-} 
+
+    //Assert callback function
+    public static function AssertCallbackFunc($file, $line, $code, $desc = null)
+    {
+        if(__DEBUG)
+        {
+            echo "<p>[" . DbgHelper::GetChannelName(DbgHelper::ASSERT) . "] " . "Assertion failed at $file:$line: $code";
+            if ($desc)
+                echo ": $desc";
+            echo "</p>";
+
+            die();
+        }
+        else
+            die("<p>Something went wrong. Please contact <a href='mailto:" . Cfg::$appSupport . "'>support.</a></p>");
+    }
+}
+
+//Setup assert callback function
+assert_options(ASSERT_CALLBACK, 'Utils\Debug\DbgHelper::AssertCallbackFunc');

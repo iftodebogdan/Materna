@@ -24,14 +24,14 @@ class SQLHelper {
     public function Connect()
     {
         $this->con = mysqli_connect(Cfg::$cfgDbHost, Cfg::$cfgDbUser, Cfg::$cfgDbPass, Cfg::$cfgDbSchema)
-        or DbgHelper::printDbgMsgAndDie(mysqli_connect_error(), DbgHelper::SQL);
+        or DbgHelper::PrintDbgMsgAndDie(mysqli_connect_error(), DbgHelper::SQL);
     }
 
     //Does a query and returns the results
     public function Query($query)
     {
         $ret = mysqli_query($this->con, $query)
-        or DbgHelper::printDbgMsg(mysqli_error($this->con), DbgHelper::SQL);
+        or DbgHelper::PrintDbgMsg(mysqli_error($this->con), DbgHelper::SQL);
 
         return $ret;
     }
@@ -40,6 +40,6 @@ class SQLHelper {
     public function Disconnect()
     {
         mysqli_close($this->con)
-        or DbgHelper::printDbgMsg(mysqli_error($this->con), DbgHelper::SQL) && false;
+        or DbgHelper::PrintDbgMsg(mysqli_error($this->con), DbgHelper::SQL) && false;
     }
 } 

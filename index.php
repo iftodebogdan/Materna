@@ -16,7 +16,10 @@ use \Resources\Config\Cfg as Cfg;
 
 //Check if there is a QUERY_STRING index
 if(!array_key_exists('QUERY_STRING', $_SERVER) || !strlen($_SERVER['QUERY_STRING']))
-    DbgHelper::printDbgMsgAndDie('Index QUERY_STRING does not exist in $_SERVER!', DbgHelper::ERROR);
+{
+    //DbgHelper::PrintDbgMsgAndDie('Index QUERY_STRING does not exist in $_SERVER!', DbgHelper::ERROR);
+    $_SERVER['QUERY_STRING'] = 'Home';
+}
 
 //Parse the QUERY_STRING
 $params = explode('/', $_SERVER['QUERY_STRING']);
@@ -49,15 +52,14 @@ if( count($params) )
         $controllerClass = '\Controllers\\' . $controllerClass;
 
         //Instantiate modules
-        $model = new $modelClass() or DbgHelper::printDbgMsgAndDie("Could not instantiate $modelClass!", DbgHelper::SYSTEM);
-        $controller = new $controllerClass($model) or DbgHelper::printDbgMsgAndDie("Could not instantiate $controllerClass!", DbgHelper::SYSTEM);
-        $view = new $viewClass($controller, $model) or DbgHelper::printDbgMsgAndDie("Could not instantiate $viewClass!", DbgHelper::SYSTEM);
-
+        $model = new $modelClass();
+        $controller = new $controllerClass($model);
+        $view = new $viewClass($controller, $model);
     }
     else
         //At least one file does not exist
-        DbgHelper::printDbgMsgAndDie('Could not find the \'' . $params[0] . '\' MVC model!', DbgHelper::APP);
+        DbgHelper::PrintDbgMsgAndDie('Could not find the \'' . $params[0] . '\' MVC model!', DbgHelper::APP);
 }
 else
     //There are no user arguments
-    DbgHelper::printDbgMsgAndDie('There are no app parameters!', DbgHelper::ERROR);
+    DbgHelper::PrintDbgMsgAndDie('There are no app parameters!', DbgHelper::ERROR);

@@ -1,0 +1,9 @@
+.content-base
+{
+    position: absolute;
+    border: 2px solid;
+    border-radius: 5px;
+    box-shadow: 10px 10px 5px #888888;
+    background-color: white;
+    text-align: center;
+}
