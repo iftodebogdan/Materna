@@ -51,6 +51,9 @@ if( count($params) )
         $viewClass = '\Views\\' . $viewClass;
         $controllerClass = '\Controllers\\' . $controllerClass;
 
+	    //Start PHP session
+	    session_start();
+
         //Instantiate modules
         $model = new $modelClass();
         $controller = new $controllerClass($model);
@@ -63,3 +66,5 @@ if( count($params) )
 else
     //There are no user arguments
     DbgHelper::PrintDbgMsgAndDie('There are no app parameters!', DbgHelper::ERROR);
+
+DbgHelper::FlushDbgOutputBuffer();

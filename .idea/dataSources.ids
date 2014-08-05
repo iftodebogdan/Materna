@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="dataSourceStorage">
   <data-source source="LOCAL" name="MySQL - materna@iftodebogdan.dlinkddns.com" uuid="a6e067fb-d51c-4022-b55b-ed104b577872">
-    <database-info product="MySQL" version="5.5.37-0ubuntu0.13.10.1" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.29 ( Revision: alexander.soklakov@oracle.com-20140120140810-s44574olh90i6i4l )">
+    <database-info product="MySQL" version="5.5.38-0ubuntu0.14.04.1" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.29 ( Revision: alexander.soklakov@oracle.com-20140120140810-s44574olh90i6i4l )">
       <extra-name-characters>#@</extra-name-characters>
       <identifier-quote-string>`</identifier-quote-string>
     </database-info>
@@ -572,6 +572,18 @@
       <column name="LinkText" sqlType="VARCHAR" length="50" precision="0" nullable="true" jdbcType="12"/>
       <column name="LinkHref" sqlType="VARCHAR" length="50" precision="0" nullable="true" jdbcType="12"/>
       <column name="LinkIdx" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4"/>
+    </table>
+    <table name="UserInformation" schema="" catalog="materna" type="TABLE">
+      <column name="ID" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="UserName" sqlType="VARCHAR" length="100" precision="0" nullable="true" jdbcType="12"/>
+      <column name="Password" sqlType="VARCHAR" length="255" precision="0" nullable="false" jdbcType="12"/>
+      <column name="FullName" sqlType="VARCHAR" length="100" precision="0" nullable="true" jdbcType="12"/>
+      <column name="Email" sqlType="VARCHAR" length="100" precision="0" nullable="false" jdbcType="12"/>
+      <column name="Privileges" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4" def="MQ=="/>
+      <column name="ActivationCode" sqlType="VARCHAR" length="32" precision="0" nullable="false" jdbcType="12"/>
+      <column name="IsActivated" sqlType="TINYINT" length="3" precision="0" nullable="false" jdbcType="-6" def="MA=="/>
+      <primary-key name="PRIMARY" columns="ID"/>
+      <index name="unique_UserID" unique="true" columns="UserName"/>
     </table>
   </data-source>
 </component>

@@ -12,7 +12,7 @@ namespace Resources\Themes;
 include_once('Resources/Config/cfg.inc');
 use Resources\Config\Cfg as Cfg;
 
-//Interface for theme classes - deriving from this
+//Interface for theme classes - implementing this
 //assures (hopefully) that a new theme does not
 //require further code modification elsewhere
 use Utils\Debug\DbgHelper;
@@ -41,8 +41,14 @@ class GuiBox
     public $alignX;
     public $alignY;
 
-    function __construct($x1 = 0, $y1 = 0, $x2 = 0, $y2 = 0, $alignX = GuiAlignment::GUI_ALIGN_LEFT, $alignY = GuiAlignment::GUI_ALIGN_TOP)
+    function __construct($x1, $y1, $x2, $y2, $alignX = GuiAlignment::GUI_ALIGN_LEFT, $alignY = GuiAlignment::GUI_ALIGN_TOP)
     {
+	    if(!is_numeric($x1) || !is_numeric($y1) || !is_numeric($x2) || !is_numeric($y2))
+	    {
+		    $x1 = $y1 = $x2 = $y2 = 0;
+		    DbgHelper::PrintDbgMsg("GuiBox parameters are invalid!", DbgHelper::GUI);
+	    }
+
         $this->x1 = $x1;
         $this->y1 = $y1;
         $this->x2 = $x2;
@@ -55,7 +61,7 @@ class GuiBox
 abstract class ThemeBase implements ThemeInterface
 {
     //Draw <head> and start <body>
-    public static function GuiBeginDraw()
+    public static function GuiBeginDraw($head = "")
     {
         ?>
             <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
@@ -63,6 +69,7 @@ abstract class ThemeBase implements ThemeInterface
             <html>
 
                 <head>
+	                <meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
                     <title><?php echo Cfg::$appTitle; ?></title>
                     <link rel="stylesheet" type="text/css" href="<?php echo '/WebEngine/Apps/' . Cfg::$appTitle . '/Resources/Styles/style.css'; ?>">
                     <link rel="stylesheet" type="text/css" href="<?php echo '/WebEngine/Resources/Styles/style.css'; ?>">
@@ -73,6 +80,7 @@ abstract class ThemeBase implements ThemeInterface
                         If you are using a JavaScript compliant browser and still have problems, make sure you have JavaScript enabled in
                         your browser's preferences.
                     </noscript>
+	                <?php echo $head; ?>
                 </head>
                 <body>
         <?php
@@ -87,26 +95,35 @@ abstract class ThemeBase implements ThemeInterface
         <?php
     }
 
-    public static function GuiDrawContent(GuiBox $dest, $content, $class = '', $id = '')
+    public static function GuiDrawContent(GuiBox $dest, $content, $class = "", $id = "")
     {
         $width = $dest->x2 - $dest->x1;
         $height = $dest->y2 - $dest->y1;
-        if(empty($class))
+        if(empty($class) && empty($id))
             $class = 'content-base';
         ?>
-                    <div
-                        <?php if(is_array($class))
-                                foreach($class as $classItem)
-                                    echo "class=\"$classItem\" ";
-                             else
-                                 echo "class=\"$class\"";?>
+                    <div <?php
+                            if(!empty($class))
+                            {
+                                echo "\n";
+                                echo "                        class=\"";
+                                if(is_array($class))
+                                {
+                                    $i = 0;
+                                    foreach($class as $classItem)
+                                        echo $classItem . (++$i === count($class) ? "" : " ");
+                                }
+                                else
+                                     echo $class;
+                                echo "\"";
+                            }?>
                         <?php if(!empty($id)) echo "\n"; ?>
                         <?php if(!empty($id))
                                 echo "id=\"$id\""; ?>
                         <?php echo "\n"; ?>
                         style="
-                            width: <?php echo $width ?>px;
-                            height: <?php echo $height ?>px;
+                            <?php if($width) echo "width:$width" . "px;" ?>
+                            <?php if($height) echo "height:$height" . "px;" ?>
                             <?php
                                 if($dest->alignX == GuiAlignment::GUI_ALIGN_LEFT)
                                     echo 'left:' . $dest->x1 . 'px;';
@@ -115,7 +132,7 @@ abstract class ThemeBase implements ThemeInterface
                                 else if($dest->alignX == GuiAlignment::GUI_ALIGN_CENTER)
                                     echo 'left: 50%; margin-left: ' . ($dest->x1 - $width / 2) . 'px;';
                                 else
-                                    DbgHelper::PrintDbgMsg("Invalid alignment", DbgHelper::GUI);
+                                    DbgHelper::PrintDbgMsg("Invalid X alignment: $dest->alignX", DbgHelper::GUI);
                             echo "\n";
                             ?>
                             <?php
@@ -126,7 +143,7 @@ abstract class ThemeBase implements ThemeInterface
                             else if($dest->alignY == GuiAlignment::GUI_ALIGN_CENTER)
                                 echo 'top: 50%; margin-top: ' . ($dest->y1 - $height / 2) . 'px;';
                             else
-                                DbgHelper::PrintDbgMsg("Invalid alignment", DbgHelper::GUI);
+                                DbgHelper::PrintDbgMsg("Invalid Y alignment: $dest->alignY", DbgHelper::GUI);
                             ?>">
 
                                 <?php echo $content ?>

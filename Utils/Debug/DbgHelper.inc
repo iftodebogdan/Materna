@@ -12,6 +12,11 @@ namespace Utils\Debug;
 if(!defined('__DEBUG'))
     define('__DEBUG', true);
 
+if(__DEBUG)
+	error_reporting(E_ALL);
+else
+	error_reporting(0);
+
 //Activate assert and make it quiet
 assert_options(ASSERT_ACTIVE, 1);
 assert_options(ASSERT_WARNING, 0);
@@ -20,6 +25,10 @@ assert_options(ASSERT_QUIET_EVAL, 1);
 //Include Cfg class to access configuration data
 require_once('Resources/Config/cfg.inc');
 use \Resources\Config\Cfg as Cfg;
+
+//Include PerformanceHelper class for server benchmarking
+require_once('Utils/Performance/PerformanceHelper.inc');
+use \Utils\Performance\PerformanceHelper as PerformanceHelper;
 
 //Debug helper class for printing helpful messages and such
 class DbgHelper {
@@ -35,6 +44,8 @@ class DbgHelper {
     const ERROR         =  7;   //for generic errors
     const APP           =  8;   //for app errors
     const GUI           =  9;   //for GUI errors
+
+	private static $outputBuffer = "";
 
     //internal function which returns the channel name
     private static function GetChannelName($channel)
@@ -59,7 +70,7 @@ class DbgHelper {
     private static function BuildDbgMsg(&$message, $channel)
     {
         $bt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)[1];
-        $message = '<p>[' . strtoupper(DbgHelper::GetChannelName($channel)) . '] ' . $message . ' in ' . $bt['file'] . ' at line ' . $bt['line'] . '</p>';
+        $message = '<p>[' . strtoupper(DbgHelper::GetChannelName($channel)) . '] ' . $message . ' [in ' . $bt['file'] . ' at line ' . $bt['line'] . ']</p>';
     }
 
     //Displays a debug message
@@ -68,7 +79,8 @@ class DbgHelper {
         if(__DEBUG)
         {
             self::BuildDbgMsg($message, $channel);
-            echo $message;
+            //echo $message;
+			self::$outputBuffer .= $message;
         }
     }
 
@@ -82,12 +94,17 @@ class DbgHelper {
             if($printStackTrace)
             {
                 $e = new \Exception;
-                echo '<pre>';
-                echo $e->getTraceAsString();
-                echo '</pre>';
+                //echo '<pre>';
+	            self::$outputBuffer .= '<pre>';
+                //echo $e->getTraceAsString();
+	            self::$outputBuffer .= $e->getTraceAsString();
+                //echo '</pre>';
+				self::$outputBuffer .= '</pre>';
             }
+			self::$outputBuffer .= $message;
 
-            die($message);
+	        self::FlushDbgOutputBuffer();
+            die(/*$message*/);
         }
         else
             die("<p>Something went wrong. Please contact <a href='mailto:" . Cfg::$appSupport . "'>support.</a></p>");
@@ -98,16 +115,39 @@ class DbgHelper {
     {
         if(__DEBUG)
         {
-            echo "<p>[" . DbgHelper::GetChannelName(DbgHelper::ASSERT) . "] " . "Assertion failed at $file:$line: $code";
+            //echo "<p>[" . DbgHelper::GetChannelName(DbgHelper::ASSERT) . "] " . "Assertion failed at $file:$line: $code";
+	        self::$outputBuffer .= "<p>[" . DbgHelper::GetChannelName(DbgHelper::ASSERT) . "] " . "Assertion failed at $file:$line: $code";
             if ($desc)
-                echo ": $desc";
-            echo "</p>";
+                //echo ": $desc";
+	            self::$outputBuffer .= ": $desc";
+            //echo "</p>";
+	        self::$outputBuffer .= "</p>";
 
+	        self::FlushDbgOutputBuffer();
             die();
         }
         else
             die("<p>Something went wrong. Please contact <a href='mailto:" . Cfg::$appSupport . "'>support.</a></p>");
     }
+
+	//Flush the output buffer
+	public static function FlushDbgOutputBuffer()
+	{
+		if(__DEBUG)
+			echo self::$outputBuffer;
+	}
+
+	//Server benchmark
+	public static function RunBenchmark()
+	{
+		$old_error_reporting = error_reporting(0);
+		try {
+			PerformanceHelper::RunBenchmark();
+		} catch (\Exception $e) {
+
+		}
+		error_reporting($old_error_reporting);
+	}
 }
 
 //Setup assert callback function

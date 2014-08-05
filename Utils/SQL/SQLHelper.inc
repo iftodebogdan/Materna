@@ -30,8 +30,16 @@ class SQLHelper {
     //Does a query and returns the results
     public function Query($query)
     {
-        $ret = mysqli_query($this->con, $query)
-        or DbgHelper::PrintDbgMsg(mysqli_error($this->con), DbgHelper::SQL);
+	    if($this->con)
+	    {
+		    $start = microtime(true);
+	        $ret = mysqli_query($this->con, $query)
+	        or DbgHelper::PrintDbgMsg(mysqli_error($this->con), DbgHelper::SQL);
+		    $time = microtime(true) - $start;
+		    DbgHelper::PrintDbgMsg("Query \"$query\" took $time seconds", DbgHelper::SQL);
+	    }
+	    else
+		    $ret = false;
 
         return $ret;
     }
@@ -39,7 +47,19 @@ class SQLHelper {
     //Disconnects from the database
     public function Disconnect()
     {
-        mysqli_close($this->con)
-        or DbgHelper::PrintDbgMsg(mysqli_error($this->con), DbgHelper::SQL) && false;
+	    if($this->con)
+	    {
+	        mysqli_close($this->con)
+	        or DbgHelper::PrintDbgMsg(mysqli_error($this->con), DbgHelper::SQL) && false;
+	    }
     }
+
+	//Sanitize input
+	public function Sanitize($string)
+	{
+		if($this->con)
+			return mysqli_escape_string($this->con, $string);
+		else
+			return null;
+	}
 } 
